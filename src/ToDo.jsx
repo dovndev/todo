@@ -27,8 +27,7 @@ function ToDo() {
     }
 
     function resetForm() {
-        setUserid("");
-        setPassword("");
+        setPassword(""); // Reset only password and newNote
         setAccount("");
         setNewNote("");
     }
@@ -67,6 +66,7 @@ function ToDo() {
         } else {
             setAccount("Invalid credentials!");
         }
+        // Do NOT reset userid here to keep the current logged-in user's context
         resetForm();
     }
 
@@ -86,11 +86,12 @@ function ToDo() {
             setNotes(updatedNotes);
             setNewNote("");
 
-            if (isLoggedin) {
+            if (isLoggedin && userid) { // Ensure userid is available
                 let userData = localStorage.getItem(userid);
+                
                 if (userData) {
                     userData = JSON.parse(userData);
-                    userData.notes = updatedNotes;
+                    userData.notes = updatedNotes; // Update the notes
                     localStorage.setItem(userid, JSON.stringify(userData));
                 } else {
                     console.error("User data not found in localStorage.");
@@ -103,7 +104,7 @@ function ToDo() {
         const updatedNotes = notes.filter((_, i) => i !== index);
         setNotes(updatedNotes);
 
-        if (isLoggedin) {
+        if (isLoggedin && userid) {
             const userData = JSON.parse(localStorage.getItem(userid));
             userData.notes = updatedNotes;
             localStorage.setItem(userid, JSON.stringify(userData));
@@ -121,7 +122,7 @@ function ToDo() {
             updatedNotes.splice(index - 1, 0, movedNote);
             setNotes(updatedNotes);
 
-            if (isLoggedin) {
+            if (isLoggedin && userid) {
                 const userData = JSON.parse(localStorage.getItem(userid));
                 userData.notes = updatedNotes;
                 localStorage.setItem(userid, JSON.stringify(userData));
@@ -136,7 +137,7 @@ function ToDo() {
             updatedNotes.splice(index + 1, 0, movedNote);
             setNotes(updatedNotes);
 
-            if (isLoggedin) {
+            if (isLoggedin && userid) {
                 const userData = JSON.parse(localStorage.getItem(userid));
                 userData.notes = updatedNotes;
                 localStorage.setItem(userid, JSON.stringify(userData));
