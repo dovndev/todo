@@ -18,13 +18,6 @@ function ToDo() {
         }
     }, [isLoggedin, userid]);
 
-    useEffect(() => {
-        if (isLoggedin) {
-            const data = { password: password, notes: notes };
-            localStorage.setItem(userid, JSON.stringify(data));
-        }
-    }, [notes, isLoggedin, userid, password]);
-
     function handleUserid(event) {
         setUserid(event.target.value);
     }
@@ -51,8 +44,9 @@ function ToDo() {
             setAccount("Account already exists!");
             return;
         }
+        
         const data = { password, notes: [] };
-        localStorage.setItem(userid, JSON.stringify(data));
+        localStorage.setItem(userid, JSON.stringify(data)); // Use userid as key
         setLogin(true);
         resetForm();
     }
@@ -88,13 +82,32 @@ function ToDo() {
 
     function addNote() {
         if (newNote.trim() !== "") {
-            setNotes((prevNotes) => [...prevNotes, newNote]);
+            const updatedNotes = [...notes, newNote];
+            setNotes(updatedNotes);
             setNewNote("");
+
+            if (isLoggedin) {
+                let userData = localStorage.getItem(userid);
+                if (userData) {
+                    userData = JSON.parse(userData);
+                    userData.notes = updatedNotes;
+                    localStorage.setItem(userid, JSON.stringify(userData));
+                } else {
+                    console.error("User data not found in localStorage.");
+                }
+            }
         }
     }
 
     function deleteNote(index) {
-        setNotes((prevNotes) => prevNotes.filter((_, i) => i !== index));
+        const updatedNotes = notes.filter((_, i) => i !== index);
+        setNotes(updatedNotes);
+
+        if (isLoggedin) {
+            const userData = JSON.parse(localStorage.getItem(userid));
+            userData.notes = updatedNotes;
+            localStorage.setItem(userid, JSON.stringify(userData));
+        }
     }
 
     function editNote(index) {
@@ -103,28 +116,35 @@ function ToDo() {
 
     function moveNoteUp(index) {
         if (index > 0) {
-            setNotes((prevNotes) => {
-                const updatedNotes = [...prevNotes];
-                const [movedNote] = updatedNotes.splice(index, 1);
-                updatedNotes.splice(index - 1, 0, movedNote);
-                return updatedNotes;
-            });
+            const updatedNotes = [...notes];
+            const [movedNote] = updatedNotes.splice(index, 1);
+            updatedNotes.splice(index - 1, 0, movedNote);
+            setNotes(updatedNotes);
+
+            if (isLoggedin) {
+                const userData = JSON.parse(localStorage.getItem(userid));
+                userData.notes = updatedNotes;
+                localStorage.setItem(userid, JSON.stringify(userData));
+            }
         }
     }
 
     function moveNoteDown(index) {
         if (index < notes.length - 1) {
-            setNotes((prevNotes) => {
-                const updatedNotes = [...prevNotes];
-                const [movedNote] = updatedNotes.splice(index, 1);
-                updatedNotes.splice(index + 1, 0, movedNote);
-                return updatedNotes;
-            });
+            const updatedNotes = [...notes];
+            const [movedNote] = updatedNotes.splice(index, 1);
+            updatedNotes.splice(index + 1, 0, movedNote);
+            setNotes(updatedNotes);
+
+            if (isLoggedin) {
+                const userData = JSON.parse(localStorage.getItem(userid));
+                userData.notes = updatedNotes;
+                localStorage.setItem(userid, JSON.stringify(userData));
+            }
         }
     }
 
-    function menuOpen() {
-    }
+    function menuOpen() {}
 
     return (
         <div className="todolist">
