@@ -197,7 +197,6 @@ ol {
   opacity: 0;
   transition: .5s;
   max-height: 50px;
-  background: none;
 }
 
 li:hover .buttons {
