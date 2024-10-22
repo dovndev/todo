@@ -218,8 +218,8 @@ function ToDo() {
                                     <h1>Login</h1>
                                     <div className="loginbox">
                                         <div className="inputs">
-                                            <input onChange={handleUserid} type="text" placeholder="userid" value={userid} required />
-                                            <input onChange={handlePasswd} type="password" placeholder="password" value={password} required />
+                                            <input onChange={handleUserid} type="text" placeholder=" create userid" value={userid} required />
+                                            <input onChange={handlePasswd} type="password" placeholder="create password" value={password} required />
                                         </div>
                                         <div className="loginbtn">
                                             <button type="submit">Login</button>
