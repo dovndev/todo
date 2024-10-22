@@ -148,7 +148,7 @@ input:focus {
 
 @media only screen and (max-width: 500px) {
   .notecontent{
-    width:90%;
+    width:100%;
   }
   
   .buttons button{
