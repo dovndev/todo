@@ -43,7 +43,12 @@ function ToDo() {
     function signUp(event) {
         event.preventDefault();
         if (!userid || !password) {
-            setAccount("invalid userid or password.");
+            setAccount("Invalid userid or password.");
+            return;
+        }
+        const userdata = localStorage.getItem(userid);
+        if (userdata) {
+            setAccount("Account already exists!");
             return;
         }
         const data = { password, notes: [] };
@@ -119,7 +124,6 @@ function ToDo() {
     }
 
     function menuOpen() {
-        // Future implementation
     }
 
     return (
@@ -199,8 +203,8 @@ function ToDo() {
                                     <h1>Signup</h1>
                                     <div className="loginbox">
                                         <div className="inputs">
-                                            <input onChange={handleUserid} type="text" placeholder="userid" value={userid} required />
-                                            <input onChange={handlePasswd} type="password" placeholder="password" value={password} required />
+                                            <input onChange={handleUserid} type="text" placeholder="create userid" value={userid} required />
+                                            <input onChange={handlePasswd} type="password" placeholder="create password" value={password} required />
                                         </div>
                                         <div className="loginbtn">
                                             <button type="submit">Signup</button>
