@@ -43,7 +43,12 @@ function ToDo() {
     function signUp(event) {
         event.preventDefault();
         if (!userid || !password) {
-            setAccount("invalid userid or password.");
+            setAccount("Invalid userid or password.");
+            return;
+        }
+        const userdata = localStorage.getItem(userid);
+        if (userdata) {
+            setAccount("Account already exists!");
             return;
         }
         const data = { password, notes: [] };
@@ -119,7 +124,6 @@ function ToDo() {
     }
 
     function menuOpen() {
-        // Future implementation
     }
 
     return (
