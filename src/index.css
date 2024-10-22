@@ -187,6 +187,7 @@ ol {
   overflow: scroll;
   scrollbar-width: none;
   scrollbar-color: transparent;
+  max-width:50%;
 }
 
 .header span {
