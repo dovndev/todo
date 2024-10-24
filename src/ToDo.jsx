@@ -27,7 +27,7 @@ function ToDo() {
     }
 
     function resetForm() {
-        setPassword(""); // Reset only password and newNote
+        setPassword("");
         setAccount("");
         setNewNote("");
     }
@@ -45,7 +45,7 @@ function ToDo() {
         }
         
         const data = { password, notes: [] };
-        localStorage.setItem(userid, JSON.stringify(data)); // Use userid as key
+        localStorage.setItem(userid, JSON.stringify(data));
         setLogin(true);
         resetForm();
     }
@@ -66,7 +66,6 @@ function ToDo() {
         } else {
             setAccount("Invalid credentials!");
         }
-        // Do NOT reset userid here to keep the current logged-in user's context
         resetForm();
     }
 
@@ -86,15 +85,13 @@ function ToDo() {
             setNotes(updatedNotes);
             setNewNote("");
 
-            if (isLoggedin && userid) { // Ensure userid is available
+            if (isLoggedin && userid) {
                 let userData = localStorage.getItem(userid);
                 
                 if (userData) {
                     userData = JSON.parse(userData);
-                    userData.notes = updatedNotes; // Update the notes
+                    userData.notes = updatedNotes;
                     localStorage.setItem(userid, JSON.stringify(userData));
-                } else {
-                    console.error("User data not found in localStorage.");
                 }
             }
         }
