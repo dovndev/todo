@@ -9,6 +9,7 @@ function ToDo() {
     const [notes, setNotes] = useState([]);
     const [newNote, setNewNote] = useState("");
     const [edit,setEdit] = useState(false);
+    const [editIndex,setIndex] = useState(null);
 
     useEffect(() => {
         if (isLoggedin) {
@@ -116,12 +117,14 @@ function ToDo() {
     }
     function editNote(index) {
         setNewNote(notes[index]);
+        setEdit(true);
+        setIndex(index);
     }
     function addEditNote(index) {
         if (newNote.trim() !== "") {
             const editedNote = newNote; 
-            setNotes(notes.splice(index,1,editedNote);
-            setNewNote("");
+            const updatedNotes = notes.splice(editIndex,1,editedNote);
+                    
 
             if (isLoggedin && userid) {
                 let userData = localStorage.getItem(userid);
@@ -132,7 +135,10 @@ function ToDo() {
                     localStorage.setItem(userid, JSON.stringify(userData));
                 }
             }
+            setEdit(false);
+            setNewNote("");    
         }
+        
     }
 
     function moveNoteUp(index) {
@@ -190,7 +196,7 @@ function ToDo() {
                                 value={newNote}
                                 onChange={handleInput}
                             />
-                            <button id="addbtn" className="addbutton" onClick={addNote}>
+                            <button id="addbtn" className="addbutton" onClick={edit ? addEditNote :addNote}>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M14 9l6 6-6 6" />
                                     <path d="M4 4v7a4 4 0 0 0 4 4h11" />
