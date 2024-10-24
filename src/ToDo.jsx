@@ -8,6 +8,7 @@ function ToDo() {
     const [isLoggedin, setLogin] = useState(false);
     const [notes, setNotes] = useState([]);
     const [newNote, setNewNote] = useState("");
+    const [edit,setEdit] = useState(false);
 
     useEffect(() => {
         if (isLoggedin) {
@@ -74,8 +75,14 @@ function ToDo() {
     }
 
     const handleEnter = (event) => {
+        if(edit !== true){
         if (event.keyCode === 13) {
             addNote();
+        }}
+        else{
+            if (event.keyCode === 13) {
+            addEditNote();
+        }}
         }
     };
 
@@ -107,9 +114,25 @@ function ToDo() {
             localStorage.setItem(userid, JSON.stringify(userData));
         }
     }
-
     function editNote(index) {
         setNewNote(notes[index]);
+    }
+    function addEditNote(index) {
+        if (newNote.trim() !== "") {
+            const editedNote = newNote; 
+            setNotes(notes.splice(index,1,editedNote);
+            setNewNote("");
+
+            if (isLoggedin && userid) {
+                let userData = localStorage.getItem(userid);
+                
+                if (userData) {
+                    userData = JSON.parse(userData);
+                    userData.notes = updatedNotes;
+                    localStorage.setItem(userid, JSON.stringify(userData));
+                }
+            }
+        }
     }
 
     function moveNoteUp(index) {
